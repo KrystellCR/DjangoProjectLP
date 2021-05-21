@@ -1,0 +1,17 @@
+migrations/
+media/
+
+.env/
+
+# Cache, migrations
+*.pyc
+__pycache__/*
+project/__pycache__/
+apps/candidates/__pycache__/
+apps/candidates/migrations/
+apps/users/__pycache__/
+apps/users/migrations/
+apps/job_offers/__pycache__/
+apps/job_offers/migrations/
+
+*.DS_Store
