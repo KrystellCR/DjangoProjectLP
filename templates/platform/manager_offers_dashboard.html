@@ -9,7 +9,120 @@
  <div class="card shadow mb-4">
 	 <div class="card-header py-3">
 
-	
+        <!-- Modal -->
+			<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Candidato</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!--- form -->					
+                        <form method="POST"  onsubmit="CreateCandidate(event);" enctype="multipart/form-data" id="create_candidate_form">
+                            {% csrf_token %}
+
+                            <input value="{{ request.user.pk }}" name="created_by" hidden>
+                            <input type="text" id="id_oferta" name="job_offer" hidden>
+                                         
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2 col-sm-2 col-xs-2" >
+                                        <label class="control-label" style="margin-top: 5px;">Correo</label>
+                                    </div>
+                                    <div class="col-md-10 col-sm-10 col-xs-10">
+                                        <input  type="email" placeholder="Escribe el correo" class="form-control" name="email" minlength="6" required />
+                                        <div class="invalid-feedback" id="error_email">
+                                            invalid
+                                         </div>
+                                    
+                                    </div>
+                                </div>
+                            </div>
+    
+                                 
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2 col-sm-2 col-xs-2" >
+                                        <label class="control-label" style="margin-top: 5px;">Nombre</label>
+                                    </div>
+                                    <div class="col-md-10 col-sm-10 col-xs-10">
+                                        <input type="text" placeholder="" class="form-control" name="first_name"  minlength="6" required />
+                                        <div class="invalid-feedback" id="error_first_name">
+                                            invalid
+                                         </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+    
+    
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2 col-sm-2 col-xs-2" >
+                                        <label class="control-label" style="margin-top: 5px;">Apellido</label>
+                                    </div>
+                                    <div class="col-md-10 col-sm-10 col-xs-10">
+                                        <input type="text" placeholder="" class="form-control" name="last_name" minlength="6" required />
+                                        <div class="invalid-feedback" id= "error_last_name">
+                                            invalid
+                                         </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            
+
+                            
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2 col-sm-2 col-xs-2" >
+                                        <label class="control-label" style="margin-top: 5px;">Avatar</label>
+                                    </div>
+                                    <div class="col-md-10 col-sm-10 col-xs-10">
+                                        <input type="file" name="avatar" accept="image/*" />
+                                        <div class="invalid-feedback" id= "error_avatar">
+                                            invalid
+                                         </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-2 col-sm-2 col-xs-2" >
+                                        <label class="control-label" style="margin-top: 5px;">CV</label>
+                                    </div>
+                                    <div class="col-md-10 col-sm-10 col-xs-10">
+                                        <input type="file" class="form-control-file" name="cv" accept=".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.pdf">
+                                        <div class="invalid-feedback" id= "error_cv">
+                                            invalid
+                                         </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+
+                            
+                       
+                            
+                            <input type="submit" class="btn btn-success" id="submitBtn" value="Aceptar" />
+                            
+                           
+                        </form>
+    
+                        <!-- /form -->
+                        
+                    </div>
+                    
+                    </div>
+                </div>
+                </div>	
+    
 	 </div>
 	 <div class="card-body">
 		 <div class="table-responsive">
@@ -37,7 +150,11 @@
 						
 							<td>{{ offer.salary }}</td>
 
-                            <td> <button class="btn btn-info">+</button></td>
+                            <td> 	
+                            <button type="button" class="btn btn-primary" onclick="send_oferta('{{ offer.id }}');" data-toggle="modal" data-target="#exampleModal">
+                                +
+                            </button>
+                        </td>
 							
 						</tr>
                         
@@ -54,14 +171,19 @@
 {% block PageLevelScripts %}
 
 <script type="text/javascript">
+function send_oferta(oferta){
+    let input_oferta = document.getElementById('id_oferta');
+    input_oferta.value = oferta;
+}
 
- function CreateJobOffer(e){
+
+ function CreateCandidate(e){
     e.preventDefault();
     cleanErrors();
-    formData = new FormData( $('#create_job_offer_form')[0]);
+    formData = new FormData( $('#create_candidate_form')[0]);
     formData.append('csrfmiddlewaretoken','{{ csrf_token }}' );
   
-	url = "{% url 'createJobOffer' %}"
+	url = "{% url 'CreateCandidate' %}"
     $.ajax({
         url: url, // takes url of parent tempalte  
         type: "POST",

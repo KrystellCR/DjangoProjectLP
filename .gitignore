@@ -14,6 +14,9 @@ apps/users/migrations/
 apps/job_offers/__pycache__/
 apps/job_offers/migrations/
 
+documents
+pictures
+
 *.DS_Store
 
 *.sqlite3
