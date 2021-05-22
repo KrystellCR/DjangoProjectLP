@@ -24,8 +24,8 @@
                         <form method="POST"  onsubmit="CreateCandidate(event);" enctype="multipart/form-data" id="create_candidate_form">
                             {% csrf_token %}
 
-                            <input value="{{ request.user.pk }}" name="created_by" hidden>
-                            <input type="text" id="id_oferta" name="job_offer" hidden>
+                            <input value="{{ request.user.pk }}" name="created_by" >
+                            <input value="" id="id_oferta" name="job_offer" >
                                          
                             <div class="form-group">
                                 <div class="row">
@@ -182,7 +182,7 @@ function send_oferta(oferta){
     cleanErrors();
     formData = new FormData( $('#create_candidate_form')[0]);
     formData.append('csrfmiddlewaretoken','{{ csrf_token }}' );
-  
+    console.log(formData);
 	url = "{% url 'CreateCandidate' %}"
     $.ajax({
         url: url, // takes url of parent tempalte  

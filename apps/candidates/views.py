@@ -25,7 +25,11 @@ from apps.job_offers.models import *
 
 class CreateCandidateView(LoginRequiredMixin,CreateView):
 	template_name = 'platform/manager_offers_dashboard.html'
-	form = createCandidateForm
+	form_class = createCandidateForm
+
+	def post(self, request, *args, **kwargs):
+		self.object = None
+		return super().post(request, *args, **kwargs)
 
 	def form_invalid(self, form):
 		data = form.errors 

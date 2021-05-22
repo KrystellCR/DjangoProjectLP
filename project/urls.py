@@ -38,4 +38,4 @@ urlpatterns = [
     path('oferta_de_trabajo/', include('apps.job_offers.urls'))
     
   
-]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+]+static (settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 

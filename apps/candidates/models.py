@@ -9,7 +9,7 @@ class candidate(models.Model):
     first_name = models.CharField(max_length=100)  
     last_name = models.CharField(max_length=200) 
     avatar =  models.ImageField(
-		upload_to='pictures',
+		upload_to='avatar',
 		blank=True,
 		null=True
 		)

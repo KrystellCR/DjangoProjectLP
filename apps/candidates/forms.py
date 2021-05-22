@@ -1,4 +1,5 @@
 from django import forms
+from django.shortcuts import get_object_or_404
 
 # Models
 from django.contrib.auth.models import User
@@ -19,17 +20,17 @@ class createCandidateForm(forms.ModelForm):
     def save(self):
         """Create Note and modify review_date"""
         data = self.cleaned_data
-        data.pop('job_offer')
-        candidate = candidate.objects.create(**data)
-        candidate.save()
+        can = candidate.objects.create(**data)
+        can.save()
+        offer =  get_object_or_404(job_offer,id = self.data['job_offer'])
         data_invitation = {
-            'candidate': candidate.id,
-            'link':'random_'+candidate.id+candidate.first_name,
-            'job_offer': job_offer,
+            'candidate': can,
+            'link':'random_'+ str(can.id) + can.first_name,
+            'job_offer': offer,
         } 
-        invitation = invitation.objects.create(**data_invitation)
+        inv = invitation.objects.create(**data_invitation)
 
-        return candidate 
+        return can 
         
        
         
