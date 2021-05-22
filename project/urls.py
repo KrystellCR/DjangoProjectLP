@@ -24,9 +24,15 @@ from django.conf import settings #para las imagenes
 from apps import * 
 from apps.candidates import urls
 from django.urls import include
+from apps.users import views
    
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path(
+        route='',
+        view=views.login_view,
+        name='login'
+    ),
     path('candidato/', include('apps.candidates.urls')),
     path('usuario/', include('apps.users.urls')),
     path('oferta_de_trabajo/', include('apps.job_offers.urls'))

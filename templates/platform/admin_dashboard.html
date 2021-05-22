@@ -1,5 +1,168 @@
 {% extends "base.html" %}
 {% block container %}
 
-	en admin_dashboard
+
+ <!-- Page Heading -->
+ <h1 class="h3 mb-2 text-gray-800">Managers</h1>
+
+ <!-- DataTales Example -->
+ <div class="card shadow mb-4">
+	 <div class="card-header py-3">
+
+		<!-- Button trigger modal -->
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+				Agregar Managers
+			</button>
+
+			<!-- Modal -->
+			<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Manager</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<!--- form -->					
+					<form method="POST"  onsubmit="CreateManager(event);" id="create_manager_form">
+						{% csrf_token %}
+									 
+						<div class="form-group">
+							<div class="row">
+								<div class="col-md-2 col-sm-2 col-xs-2" >
+									<label class="control-label" style="margin-top: 5px;">Correo</label>
+								</div>
+								<div class="col-md-10 col-sm-10 col-xs-10">
+									<input  type="email" placeholder="Escribe el correo" class="form-control" name="email" minlength="6" required />
+									<div class="invalid-feedback" id="error_email">
+										invalid
+									 </div>
+								
+								</div>
+							</div>
+						</div>
+
+							 
+						<div class="form-group">
+							<div class="row">
+								<div class="col-md-2 col-sm-2 col-xs-2" >
+									<label class="control-label" style="margin-top: 5px;">Contraseña</label>
+								</div>
+								<div class="col-md-10 col-sm-10 col-xs-10">
+									<input type="password" placeholder="Escribe la contraseña" class="form-control" name="password"  minlength="6" required />
+									<div class="invalid-feedback" id="error_password">
+										invalid
+									 </div>
+								</div>
+								
+							</div>
+						</div>
+
+
+						<div class="form-group">
+							<div class="row">
+								<div class="col-md-2 col-sm-2 col-xs-2" >
+									<label class="control-label" style="margin-top: 5px;">Confirmar contraseña</label>
+								</div>
+								<div class="col-md-10 col-sm-10 col-xs-10">
+									<input type="password" placeholder="Escribe la contraseña" class="form-control" name="password_confirmation" minlength="6" required />
+									<div class="invalid-feedback" id= "error_password_confirmation">
+										invalid
+									 </div>
+								</div>
+								
+							</div>
+						</div>
+
+				   
+						
+						<input type="submit" class="btn btn-success" id="submitBtn" value="Aceptar" />
+						
+					   
+					</form>
+
+					<!-- /form -->
+					
+				</div>
+				
+				</div>
+			</div>
+			</div>
+
+	
+	 </div>
+	 <div class="card-body">
+		 <div class="table-responsive">
+			 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+				 <thead>
+					 <tr>
+						 <th>Correo</th>
+						 
+					 </tr>
+				 </thead>
+				 
+				 <tbody>
+					 {% for manager in managers %}
+						<tr>
+							<td>{{ manager.email }}</td>
+							
+						</tr>
+					 {% endfor %}
+					 
+					
+				 </tbody>
+			 </table>
+		 </div>
+	 </div>
+ </div>
 {% endblock %}
+
+{% block PageLevelScripts %}
+
+<script type="text/javascript">
+
+ function CreateManager(e){
+    e.preventDefault();
+    cleanErrors();
+    formData = new FormData( $('#create_manager_form')[0]);
+    formData.append('csrfmiddlewaretoken','{{ csrf_token }}' );
+  
+	url = "{% url 'crearManager' %}"
+    $.ajax({
+        url: url, // takes url of parent tempalte  
+        type: "POST",
+        data: formData,
+        processData: false,  // tell jQuery not to process the data
+        contentType: false,   // tell jQuery not to set contentType
+        //dataType: 'json', // Formato de datos que se espera en la respuesta
+        
+        success: function (data) {                          
+            location.reload();
+         },
+        
+        error: function (response, status){
+            errors = response['responseJSON'].message;
+             for (let key in errors) {
+                div_error = document.getElementById('error_'+ key);
+                div_error.innerHTML  = errors[key];
+                div_error.style.display = "block";    
+              }          
+        },
+ 
+
+     });
+
+    function cleanErrors(){
+        div_errors = document.getElementsByClassName("invalid-feedback");
+        console.log(div_errors);
+        for(let el of div_errors){
+            el.style.display = "none";
+        }      
+    }
+
+}
+
+</script>
+{% endblock PageLevelScripts %}
