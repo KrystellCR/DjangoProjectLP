@@ -17,9 +17,9 @@ urlpatterns = [
     ),
    
      path(
-        route='home/',
-        view=views.HomeAdminView.as_view(),
-        name='home'
+        route='panel_managers/',
+        view=views.PanelManagers.as_view(),
+        name='panel_managers'
     ),
 
      path(
@@ -27,6 +27,8 @@ urlpatterns = [
         view=views.CreateManager.as_view(),
         name='crearManager'
     ),
+
+   
    
    
 

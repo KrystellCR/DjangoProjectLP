@@ -12,27 +12,33 @@
     <hr class="sidebar-divider my-0">
 
     <!-- Nav Item - Dashboard -->
+
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'JobOfferDashboard' %}">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Ofertas de Empleo</span></a>
+    </li>
+
+    
     {% if request.user.roles.role != 'manager' %}
     <li class="nav-item">
-        <a class="nav-link" href="{% url 'home' %}">
+        <a class="nav-link" href="{% url 'panel_managers' %}">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Managers</span></a>
     </li>
-    {% endif %}
-    
-    <li class="nav-item">
-        <a class="nav-link" href="index.html">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Ofertas de empleo</span></a>
-    </li>
+
+
 
     <li class="nav-item">
-        <a class="nav-link" href="index.html">
+        <a class="nav-link" href="{% url 'ManagerstatisticsView' %}">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Estádisticas</span></a>
     </li>
    
-   
+   {% endif %}
+
+
+
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
 

@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block container %}
+
+
+ <!-- Page Heading -->
+ <h1 class="h3 mb-2 text-gray-800">Ofertas de Empleo</h1>
+
+ <!-- DataTales Example -->
+ <div class="card shadow mb-4">
+	 <div class="card-header py-3">
+
+	
+	 </div>
+	 <div class="card-body">
+		 <div class="table-responsive">
+			 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+				 <thead>
+					 <tr>
+						 <th>Titulo</th>
+                         <th>Empesa</th>
+                         <th>Ciudad</th>
+                         <th>Salario</th>	
+                         <th>Agregar Candidato</th>					 
+					 </tr>
+				 </thead>
+				 
+				 <tbody>
+					 {% for offer in job_offers %}
+						<tr>
+							<td>{{ offer.job_title }}</td>
+							
+
+							<td>{{ offer.company }}</td>
+							
+						
+							<td>{{ offer.city }}</td>
+						
+							<td>{{ offer.salary }}</td>
+
+                            <td> <button class="btn btn-info">+</button></td>
+							
+						</tr>
+                        
+					 {% endfor %}
+					 
+					
+				 </tbody>
+			 </table>
+		 </div>
+	 </div>
+ </div>
+{% endblock %}
+
+{% block PageLevelScripts %}
+
+<script type="text/javascript">
+
+ function CreateJobOffer(e){
+    e.preventDefault();
+    cleanErrors();
+    formData = new FormData( $('#create_job_offer_form')[0]);
+    formData.append('csrfmiddlewaretoken','{{ csrf_token }}' );
+  
+	url = "{% url 'createJobOffer' %}"
+    $.ajax({
+        url: url, // takes url of parent tempalte  
+        type: "POST",
+        data: formData,
+        processData: false,  // tell jQuery not to process the data
+        contentType: false,   // tell jQuery not to set contentType
+        //dataType: 'json', // Formato de datos que se espera en la respuesta
+        
+        success: function (data) {                          
+            location.reload();
+         },
+        
+        error: function (response, status){
+            errors = response['responseJSON'].message;
+             for (let key in errors) {
+                div_error = document.getElementById('error_'+ key);
+                div_error.innerHTML  = errors[key];
+                div_error.style.display = "block";    
+              }          
+        },
+ 
+
+     });
+
+    function cleanErrors(){
+        div_errors = document.getElementsByClassName("invalid-feedback");
+        console.log(div_errors);
+        for(let el of div_errors){
+            el.style.display = "none";
+        }      
+    }
+
+}
+
+</script>
+{% endblock PageLevelScripts %}

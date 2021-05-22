@@ -14,7 +14,7 @@ from django.shortcuts import get_object_or_404
 #forms 
 from apps.users.forms import ManagerForm
 from apps.users.models import *
-
+from apps.job_offers.models import *
 # Create your views here.
 
 
@@ -36,7 +36,11 @@ def login_view (request):
 				
 			if user:	# Si hay un user entonces va a generar la sesion
 				login(request,user)
-				return redirect('/usuario/home/')	
+				if user.is_staff:
+					return redirect('/oferta_de_trabajo/')	
+				else:
+					return redirect('/oferta_de_trabajo/panel_manager')	
+						
 		else:
 			value = "Correo o contraseña incorrecta"
 			print("Incorrecto")
@@ -50,7 +54,7 @@ class LogoutView(LoginRequiredMixin, auth_views.LogoutView):
     template_name = 'users/login.html'
 	
 
-class HomeAdminView(LoginRequiredMixin,TemplateView):
+class PanelManagers(LoginRequiredMixin,TemplateView):
 	template_name = 'platform/admin_dashboard.html'
 
 	def get_context_data(self, *args, **kwargs):
@@ -73,5 +77,6 @@ class CreateManager(LoginRequiredMixin,FormView):
 		print("Creo usuario exitosamente")
 		form.save()
 		return HttpResponse(status=200)
+
 
 
