@@ -82,7 +82,7 @@
                                         <label class="control-label" style="margin-top: 5px;">Avatar</label>
                                     </div>
                                     <div class="col-md-10 col-sm-10 col-xs-10">
-                                        <input type="file" name="avatar" accept="image/*" />
+                                        <input type="file" name="avatar" accept="image/*" required />
                                         <div class="invalid-feedback" id= "error_avatar">
                                             invalid
                                          </div>
@@ -98,7 +98,7 @@
                                         <label class="control-label" style="margin-top: 5px;">CV</label>
                                     </div>
                                     <div class="col-md-10 col-sm-10 col-xs-10">
-                                        <input type="file" class="form-control-file" name="cv" accept=".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.pdf">
+                                        <input type="file" class="form-control-file" name="cv" accept=".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.pdf" required>
                                         <div class="invalid-feedback" id= "error_cv">
                                             invalid
                                          </div>
@@ -174,6 +174,7 @@
 function send_oferta(oferta){
     let input_oferta = document.getElementById('id_oferta');
     input_oferta.value = oferta;
+    
 }
 
 
@@ -192,7 +193,11 @@ function send_oferta(oferta){
         contentType: false,   // tell jQuery not to set contentType
         //dataType: 'json', // Formato de datos que se espera en la respuesta
         
-        success: function (data) {                          
+        success: function (data) {  
+
+            link = data.message;
+            base_url = data.base_url;
+            alert("Este es el link copialo" + "     " + base_url +"?invitation=" + link);           
             location.reload();
          },
         

@@ -38,8 +38,8 @@ class ManagerForm(forms.Form):
         """Verify password confirmation match."""			
 		#super una forma de llamar a clean antes de ser sobre escrito
         data = super().clean()
-       
-        if ('password') in data.items() and ('password_confirmation') in data.items:
+
+        if ('password') in data and ('password_confirmation') in data:
             password = data['password']
             password_confirmation = data['password_confirmation']
         
