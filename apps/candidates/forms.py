@@ -47,8 +47,6 @@ class aceptedInvitationForm(forms.Form):
         inv = get_object_or_404(invitation,id = self.data['id_invitation'])
         inv.acepted = True
         inv.save()
-        import pdb;pdb.set_trace()
-
         return inv
 
         

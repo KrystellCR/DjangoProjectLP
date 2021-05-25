@@ -37,7 +37,7 @@ def login_view (request):
 			if user:	# Si hay un user entonces va a generar la sesion
 				login(request,user)
 				if user.is_staff:
-					return redirect('/oferta_de_trabajo/')	
+					return redirect('/usuario/panel_managers/')	
 				else:
 					return redirect('/oferta_de_trabajo/panel_manager')	
 						
@@ -60,7 +60,7 @@ class PanelManagers(LoginRequiredMixin,TemplateView):
 	def get_context_data(self, *args, **kwargs):
 		""" Retorna el contexto """
 		context = super().get_context_data(*args, **kwargs) 
-		context['managers'] = User.objects.filter(roles__role='manager')
+		context['managers'] = User.objects.filter(roles__role='manager').order_by('-id')
 		return context
 
 

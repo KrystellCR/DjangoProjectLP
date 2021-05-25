@@ -8,8 +8,33 @@
  <!-- DataTales Example -->
  <div class="card shadow mb-4">
 	 <div class="card-header py-3">
+         
+            <!-- modal link candidate -->
+            <div class="modal fade bd-example-modal-sm" id="linkCandidate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm" role="document">
+                    <div class="modal-content">
+                   
+                    <div class="modal-body">
+                      <h5> Copia el enlace para invitar al candidato </h5>
+                        
+                      <div class="input-group mb-3">
+                        <input type="text" id="link_candidate_copy" class="form-control"  aria-label="Recipient's username" aria-describedby="basic-addon2">
+                        <div class="input-group-append">
+                          <button class="btn btn-primary"" type="button" onclick="BtnCopyLink();">Copiar</button>
+                        </div>
+                      </div>
+                      
+                    </div>
+                    
+                </div>
+                </div>
+            </div>	
+    
 
-        <!-- Modal -->
+
+
+
+            <!-- Modal -->
 			<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -24,8 +49,8 @@
                         <form method="POST"  onsubmit="CreateCandidate(event);" enctype="multipart/form-data" id="create_candidate_form">
                             {% csrf_token %}
 
-                            <input value="{{ request.user.pk }}" name="created_by" >
-                            <input value="" id="id_oferta" name="job_offer" >
+                            <input value="{{ request.user.pk }}" name="created_by" hidden >
+                            <input value="" id="id_oferta" name="job_offer" hidden >
                                          
                             <div class="form-group">
                                 <div class="row">
@@ -119,11 +144,15 @@
                         
                     </div>
                     
-                    </div>
                 </div>
-                </div>	
+                </div>
+            </div>	
     
 	 </div>
+
+
+
+
 	 <div class="card-body">
 		 <div class="table-responsive">
 			 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -171,6 +200,7 @@
 {% block PageLevelScripts %}
 
 <script type="text/javascript">
+let input_link = document.getElementById("link_candidate_copy");
 function send_oferta(oferta){
     let input_oferta = document.getElementById('id_oferta');
     input_oferta.value = oferta;
@@ -179,6 +209,7 @@ function send_oferta(oferta){
 
 
  function CreateCandidate(e){
+    input_link.value = '';
     e.preventDefault();
     cleanErrors();
     formData = new FormData( $('#create_candidate_form')[0]);
@@ -196,9 +227,11 @@ function send_oferta(oferta){
         success: function (data) {  
 
             link = data.message;
-            base_url = data.base_url;
-            alert("Este es el link copialo" + "     " + base_url +"?invitation=" + link);           
-            location.reload();
+            base_url = data.base_url+"?invitation=" + link
+            $('#exampleModal').modal('hide');     
+            ModalLinkCandidate(base_url);
+           
+            //location.reload();
          },
         
         error: function (response, status){
@@ -220,6 +253,20 @@ function send_oferta(oferta){
             el.style.display = "none";
         }      
     }
+
+}
+
+function ModalLinkCandidate(url){
+    $('#linkCandidate').modal('toggle')
+    input_link.value =  url;
+}
+
+function BtnCopyLink(){
+
+    input_link .select();
+    input_link.setSelectionRange(0, 99999);
+    document.execCommand("copy");
+    location.reload();
 
 }
 

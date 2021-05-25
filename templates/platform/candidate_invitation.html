@@ -36,22 +36,34 @@
                     <div class="card-body p-0">
                         <!-- Nested Row within Card Body -->
                         <div class="row"  style="height: 500px;">
-                            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                            <div class="col-lg-6 d-none d-lg-block bg-login-image" 
+                            style="background: url( '{{ invitation.candidate.avatar.url }}' );
+                                    background-position: center;
+                                    background-size: cover;
+                                    ">
+
+                            </div>
                             <div class="col-lg-6">
+                              
                             {% if invitation.acepted %}
 
-                               gracias por aceptar 
+                            <div class="p-5">
+                                <div class="text-center">
+                                    <h1 class="h4 text-gray-900 mb-4">Gracias {{ invitation.candidate.first_name }} </h1>
+                                    <h1> haz aplicado para la vacante {{ invitation.job_offer.job_title }} </h1>
+                                </div>
+                               
+                            </div>
                             
                             {% else %}
                                 <div class="p-5">
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Bien Venido {{ invitation.candidate.first_name }} </h1>
-                                        <h1> Tienes una invitación para la oferta {{ invitation.job_offer.title }} </h1>
+                                        <h1> Tienes una invitación para la oferta {{ invitation.job_offer.job_title }} </h1>
                                     </div>
                                     <form method="POST" action="{% url 'AceptInvitation' %}" class="user">
                                         {% csrf_token %}
-                                        <input type ="text"name="id_invitation" value="{{invitation.id }}">
-                                        
+                                        <input type ="text" name="id_invitation" value="{{invitation.id }}" hidden>   
                                         <button class="btn btn-primary btn-block mt-5" type="submit">Aceptar</button>
                                     </form>
                                 </div>

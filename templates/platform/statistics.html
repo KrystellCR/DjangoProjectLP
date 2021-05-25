@@ -1,1 +1,98 @@
-Estadisticas 
+{% extends "base.html" %}
+{% block container %}
+
+
+ <!-- Page Heading -->
+ <h1 class="h3 mb-2 text-gray-800">Estadisticas</h1>
+
+ <!-- DataTales Example -->
+ <div class="card shadow mb-4">
+	 <div class="card-header py-3">
+        Managers
+
+        <select class="form-control"  onchange="location = this.options[this.selectedIndex].value;">
+            <option value="{% url 'ManagerstatisticsView' 00 %}" {% if  view.kwargs.manager == 00  %} selected {% endif %}> Todos </option>
+            {% for user in managers %}
+                <option value="{% url 'ManagerstatisticsView' user.pk %}" {% if  view.kwargs.manager == user.pk  %} selected {% endif %}> {{ user.email }}</option>
+            {% endfor %}
+        </select>
+	 </div>
+	 <div class="card-body">
+		 <div class="table-responsive">
+			 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+				 <thead>
+					 <tr>
+						 <th>Candidato</th>
+                         <th>link </th>
+                         <th> manager</th>
+                         <th> Oferta </th>
+						 
+					 </tr>
+				 </thead>
+				 
+				 <tbody>
+					 {% for inv in invitations %}
+						<tr>
+							<td>{{ inv.candidate.first_name }}  {{ inv.candidate.last_name }}</td>
+                            <td> <a href="{{ base_url }}?invitation={{ inv.link }}"> {{ base_url }}?invitation={{ inv.link }}</a></td>
+                            <td>{{ inv.candidate.created_by }}</td>
+                            <td>{{ inv.job_offer.job_title  }}</td>
+							
+						</tr>
+					 {% endfor %}
+					 
+					
+				 </tbody>
+			 </table>
+		 </div>
+	 </div>
+ </div>
+{% endblock %}
+
+{% block PageLevelScripts %}
+
+<script type="text/javascript">
+
+ function CreateManager(e){
+    e.preventDefault();
+    cleanErrors();
+    formData = new FormData( $('#create_manager_form')[0]);
+    formData.append('csrfmiddlewaretoken','{{ csrf_token }}' );
+  
+	url = "{% url 'crearManager' %}"
+    $.ajax({
+        url: url, // takes url of parent tempalte  
+        type: "POST",
+        data: formData,
+        processData: false,  // tell jQuery not to process the data
+        contentType: false,   // tell jQuery not to set contentType
+        //dataType: 'json', // Formato de datos que se espera en la respuesta
+        
+        success: function (data) {                          
+            location.reload();
+         },
+        
+        error: function (response, status){
+            errors = response['responseJSON'].message;
+             for (let key in errors) {
+                div_error = document.getElementById('error_'+ key);
+                div_error.innerHTML  = errors[key];
+                div_error.style.display = "block";    
+              }          
+        },
+ 
+
+     });
+
+    function cleanErrors(){
+        div_errors = document.getElementsByClassName("invalid-feedback");
+        console.log(div_errors);
+        for(let el of div_errors){
+            el.style.display = "none";
+        }      
+    }
+
+}
+
+</script>
+{% endblock PageLevelScripts %}

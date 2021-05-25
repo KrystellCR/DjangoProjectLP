@@ -21,7 +21,7 @@ urlpatterns = [
     ),
 
      path(
-        route='estadisticas_manager/',
+        route='estadisticas_manager/<int:manager>',
         view=views.ManagerstatisticsView.as_view(),
         name='ManagerstatisticsView'
     ),

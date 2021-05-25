@@ -2,7 +2,6 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.shortcuts import render
-from django.shortcuts import render
 from django.contrib.auth.models import User
 #Django
 from django.contrib.auth import authenticate, login, logout # para el login
@@ -18,6 +17,7 @@ from django.shortcuts import get_object_or_404
 #forms 
 from apps.users.models import *
 from apps.job_offers.models import *
+from apps.candidates.models import *
 # Create your views here.
 # Create your views here.
 
@@ -28,7 +28,7 @@ class JobOfferAdminDashboardView(LoginRequiredMixin,TemplateView):
 	def get_context_data(self, *args, **kwargs):
 		""" Retorna el contexto """
 		context = super().get_context_data(*args, **kwargs) 
-		context['job_offers'] = job_offer.objects.filter()
+		context['job_offers'] = job_offer.objects.filter().order_by('-id')
 		return context
 
 class JobOfferDashboardView(JobOfferAdminDashboardView):
@@ -51,5 +51,27 @@ class CreateJobOffer(LoginRequiredMixin,CreateView):
 
 
 class ManagerstatisticsView(LoginRequiredMixin,TemplateView):
-    template_name = 'platform/statistics.html'
+	template_name = 'platform/statistics.html'
+
+	def get_context_data(self, *args, **kwargs):
+		""" Retorna el contexto """
+		context = super().get_context_data(*args, **kwargs) 
+		manager = self.kwargs['manager']
+		context['managers'] = User.objects.filter(roles__role = 'manager')
+
+		if manager == 00 or manager == 0:
+			context['invitations'] = invitation.objects.filter(acepted = True).order_by('job_offer')
+		else:
+			context['invitations'] = invitation.objects.filter(candidate__created_by= manager, acepted = True).order_by('job_offer')
+
+		print(context['manager'])
+		context['base_url'] = self.request.build_absolute_uri(reverse('CandidateInvitation'))
+		return context
+
+
+
+	
+
+
+
 

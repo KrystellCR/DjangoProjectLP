@@ -13,29 +13,42 @@
 
     <!-- Nav Item - Dashboard -->
 
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'JobOfferDashboard' %}">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Ofertas de Empleo</span></a>
-    </li>
-
-    
     {% if request.user.roles.role != 'manager' %}
     <li class="nav-item">
         <a class="nav-link" href="{% url 'panel_managers' %}">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <i class="fas fa-fw fa-tachometer-alt"  {% if '/usuario/panel_managers/' in request.path  %} style="color: white !important;" {% endif %}></i>
             <span>Managers</span></a>
     </li>
 
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'JobOfferAdminDashboard'  %}">
+            <i class="fas fa-fw fa-tachometer-alt" {% if '/oferta_de_trabajo/' in request.path  %} style="color: white !important;" {% endif %}></i>
+            <span>Ofertas de Empleo</span></a>
+    </li>
 
 
     <li class="nav-item">
-        <a class="nav-link" href="{% url 'ManagerstatisticsView' %}">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
+        <a class="nav-link" href="{% url 'ManagerstatisticsView' '00' %}">
+            <i class="fas fa-fw fa-tachometer-alt" {% if '/oferta_de_trabajo/estadisticas_manager/' in request.path  %} style="color: white !important;" {% endif %}></i>
             <span>Estádisticas</span></a>
     </li>
+
+
+    {% else %}
+
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'JobOfferDashboard' %}">
+            <i class="fas fa-fw fa-tachometer-alt" {% if '/oferta_de_trabajo/panel_manager' in request.path  %} style="color: white !important;" {% endif %}></i>
+            <span>Ofertas de Empleo</span></a>
+    </li>
+    {% endif %}
+
+    
+    
+
    
-   {% endif %}
+   
+  
 
 
 
