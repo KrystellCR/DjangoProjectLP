@@ -1,10 +1,14 @@
+auth.txt
+.vscode
 migrations/
 media/
-
+logs/
 .env/
 
 # Cache, migrations
 *.pyc
+_ pycache _
+*/migrations/*
 __pycache__/*
 project/__pycache__/
 apps/candidates/__pycache__/
